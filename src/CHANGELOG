@@ -1,0 +1,90 @@
+v14.0 - 2011/03/11 - CRF
+========================
+* Stats and runlog outputs changed to double precision. Code speed not affected.
+
+v13.0 - 2011/03/11 - CRF
+========================
+* Bugfix: fixed value of <uz> in stats.c
+
+v12.0 - 2011/01/06 - CRF
+========================
+* Return to v10 because it was faster. Using force along z because I want
+  larger domains along z so that the MPI exchange is less expensive.
+* Removed irrelevant output to stdout from vgrid(). 
+* Added cudaEventSynchronize() after each cudaEventRecord()
+
+v11.0 - 2011/02/16 - CRF
+========================
+* Reduce number of device/host memory transfers and MPI exchanges in the main 
+  evolution loop from 3 to 2 by exchanging all components of the f distribution
+  function from the real nodes on the boundary to the ghosts after the stream
+  step. This allows the phi calculation to be extended to the ghosts in the 
+  update_phi() kernel.
+
+v10.0 - 2011/01/06 - CRF
+=======================
+* Added synchronization point just before calculating time spent in each 
+  section. This fixes the "Evolution Time = 0" problem.
+* Code validates vs serial GPU code up to 1000 iterations on 2 GPUs. 
+
+v9.0 - 2010/12/09 - CRF
+=======================
+* More complete output, runlog.out is updated after setup, relaxation, and 
+  evolution stages to keep the relevant relaxation data intact.
+    ** Old version called finalsave.c changed to logsave.c.
+    ** Output records GPU name and memory size
+* Errors in main.cu directed to stderr
+* Info in main.cu directed to stdout
+* Phi, rho and velocity updated in individual kernels
+
+v8.0 - 2010/12/08 - CRF
+=======================
+* Removed all cudaGetLastError()
+* Removed redundant cudaThreadSync() calls. Those following a cudaMalloc() are 
+  not needed because cudaMalloc is a blocking operation. Those in between 
+  kernels are not necessary becasue the kernels are executed serially and I am
+  using always the same blocking partition. Those following a host function call
+  are also unnecessary.
+
+v7.0 - 2010/12/08 - CRF
+=======================
+* Fixed error in top_snd/top_snd_d and bot_snd/bot_snd_d copy
+* First working version
+
+v6.0 - 2010/12/08 - CRF
+=======================
+* Still not working
+* Super-Debug version
+* Includes cudaGetLastError checks after every kernel
+* Non-blocking communication in MPI exchanges
+
+v5.0 - 2010/10/11 - CRF
+=======================
+* Parallelization changed to z direction
+* Still not working
+
+v4.0 - 2010/10/11 - CRF
+=======================
+* Simplified error output
+
+v3.0 - 2010/09/13 - CRF
+=======================
+* Added MPI exchange of processor boundary phi values so that the calculated 
+  Laplacian of Phi is correct in the collision step.
+
+v2.0 - 2010/09/07 - CRF
+=======================
+* Substituted "relax" related functions as in v4.0 of standard code.
+
+* PERFORMANCE NOTES
+** Need to reconsider partitioning for the kernels dealing with MPI exchange
+** Substitute Sendrcv by Isend/Ircv
+** Use two streams and asynchronous data exchange to hide data movement between
+   host and device
+
+v1.0 - 2010/09/03 - CRF
+=======================
+* Based on v3.0 of single bubble CUDA code
+* GPU device and domain distribution amongst CPUs validated.
+
+ 

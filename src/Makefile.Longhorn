@@ -1,0 +1,14 @@
+# Development
+# MPICC   := nvcc -Xptxas -v -O0 -lm
+
+# Production
+MPICC := nvcc -Xptxas -v -O3 -use_fast_math -arch=sm_13 -lm
+
+MPI_INC := /opt/apps/intel11_1/mvapich2/1.4/include
+MPI_LIB := /opt/apps/intel11_1/mvapich2/1.4/lib
+MATH_LIB := /opt/apps/intel/11.1/lib/intel64/
+
+cudalb:
+	$(MPICC) -I$(MPI_INC) -L$(MPI_LIB) -lmpich -L$(MATH_LIB) -limf main.cu -o cudalb_mpi
+
+

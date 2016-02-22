@@ -1,0 +1,21 @@
+maxStep	relaxStep	save	stat
+1000	1000		2000	100
+
+xmax	ymax	zmax
+128	128	128
+
+BLOCK_SIZE_X	BLOCK_SIZE_Y
+32		8
+
+rhoL	rhoH
+1.00	1000.0
+
+tauRho	tauPhi
+1.00	0.7
+
+width	sigma	Gamma
+4.0 	0.01	400.0
+
+Eo
+10.0
+
